@@ -1,0 +1,49 @@
+{
+  "name": "book-review-service",
+  "version": "1.0.0",
+  "description": "Book Review API Service",
+  "main": "dist/app.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/app.js",
+    "dev": "nodemon src/app.ts",
+    "test": "jest",
+    "test:unit": "jest tests/controllers",
+    "test:integration": "jest tests/integration",
+    "test:watch": "jest --watch",
+    "migration:generate": "typeorm-ts-node-commonjs migration:generate",
+    "migration:run": "typeorm-ts-node-commonjs migration:run",
+    "migration:revert": "typeorm-ts-node-commonjs migration:revert"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@types/express": "^5.0.3",
+    "@types/node": "^24.0.7",
+    "express": "^4.21.2",
+    "express-async-errors": "^3.1.1",
+    "ioredis": "^5.6.1",
+    "nodemon": "^3.1.10",
+    "pg": "^8.16.3",
+    "reflect-metadata": "^0.2.2",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.1",
+    "ts-node": "^10.9.2",
+    "typeorm": "^0.3.25",
+    "typescript": "^5.8.3"
+  },
+  "devDependencies": {
+    "@types/ioredis": "^4.28.10",
+    "@types/jest": "^30.0.0",
+    "@types/pg": "^8.15.4",
+    "@types/supertest": "^6.0.3",
+    "@types/swagger-jsdoc": "^6.0.4",
+    "@types/swagger-ui-express": "^4.1.8",
+    "concurrently": "^9.2.0",
+    "cross-env": "^7.0.3",
+    "jest": "^30.0.3",
+    "supertest": "^7.1.1",
+    "ts-jest": "^29.4.0"
+  }
+}
