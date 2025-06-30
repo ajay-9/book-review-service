@@ -22,6 +22,17 @@ export class ReviewController {
    *     responses:
    *       200:
    *         description: List of reviews
+   *         content:
+   *           application/json:
+   *             schema:
+   *               type: object
+   *               properties:
+   *                 success:
+   *                   type: boolean
+   *                 data:
+   *                   type: array
+   *                   items:
+   *                     $ref: '#/components/schemas/Review'
    *       404:
    *         description: Book not found
    */
@@ -55,7 +66,7 @@ export class ReviewController {
    * @swagger
    * /books/{id}/reviews:
    *   post:
-   *     summary: Create a review for a book
+   *     summary: Add review to a book
    *     parameters:
    *       - in: path
    *         name: id
@@ -81,6 +92,15 @@ export class ReviewController {
    *     responses:
    *       201:
    *         description: Review created successfully
+   *         content:
+   *           application/json:
+   *             schema:
+   *               type: object
+   *               properties:
+   *                 success:
+   *                   type: boolean
+   *                 data:
+   *                   $ref: '#/components/schemas/Review'
    *       400:
    *         description: Validation error
    *       404:
@@ -91,7 +111,6 @@ export class ReviewController {
       const { id } = req.params;
       const { reviewerName, rating } = req.body;
 
-      // Validation
       if (!reviewerName || !rating) {
         res.status(400).json({
           success: false,

@@ -8,7 +8,7 @@ const options = {
     info: {
       title: 'Book Review API',
       version: '1.0.0',
-      description: 'A simple Book Review service API built with Express.js and TypeScript',
+      description: 'Book Review service API',
     },
     servers: [
       {
@@ -21,18 +21,37 @@ const options = {
         Book: {
           type: 'object',
           properties: {
-            id: { type: 'string', format: 'uuid' },
-            title: { type: 'string' }
-          }
+            id: { 
+              type: 'string', 
+              format: 'uuid' 
+            },
+            title: { 
+              type: 'string' 
+            }
+          },
+          required: ['id', 'title']
         },
         Review: {
           type: 'object',
           properties: {
-            id: { type: 'string', format: 'uuid' },
-            reviewerName: { type: 'string' },
-            rating: { type: 'integer', minimum: 1, maximum: 5 },
-            bookId: { type: 'string', format: 'uuid' }
-          }
+            id: { 
+              type: 'string', 
+              format: 'uuid' 
+            },
+            reviewerName: { 
+              type: 'string' 
+            },
+            rating: { 
+              type: 'integer', 
+              minimum: 1, 
+              maximum: 5 
+            },
+            bookId: { 
+              type: 'string', 
+              format: 'uuid' 
+            }
+          },
+          required: ['id', 'reviewerName', 'rating', 'bookId']
         }
       }
     }
@@ -44,5 +63,5 @@ const specs = swaggerJsdoc(options);
 
 export const setupSwagger = (app: Express): void => {
   app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
-  console.log('Swagger documentation available at /api-docs');
+  console.log('📚 Swagger documentation available at /api-docs');
 };

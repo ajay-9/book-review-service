@@ -22,12 +22,11 @@ describe('Cache Integration Tests', () => {
   describe('Cache-miss scenario for GET /books', () => {
     it('should handle cache miss and populate cache', async () => {
       // Clear cache to ensure cache miss
-      await CacheService.del('books:10:0');
+      await CacheService.del('books:all');
 
       // Create a test book to ensure we have data
       await bookService.createBook({
-        title: 'Cache Test Book',
-        author: 'Cache Test Author'
+        title: 'Cache Test Book'
       });
 
       // First request should be cache miss
@@ -60,7 +59,7 @@ describe('Cache Integration Tests', () => {
     });
 
     it('should invalidate cache when new book is created', async () => {
-      // Get initial books count
+      // Get initial books
       const initialResponse = await request(app)
         .get('/books')
         .expect(200);
@@ -71,8 +70,7 @@ describe('Cache Integration Tests', () => {
       await request(app)
         .post('/books')
         .send({
-          title: 'Cache Invalidation Test',
-          author: 'Test Author'
+          title: 'Cache Invalidation Test'
         })
         .expect(201);
 

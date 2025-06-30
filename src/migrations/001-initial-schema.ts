@@ -1,4 +1,4 @@
-import { MigrationInterface, QueryRunner, Table, Index, ForeignKey } from 'typeorm';
+import { MigrationInterface, QueryRunner, Table, Index } from 'typeorm';
 
 export class InitialSchema1234567890123 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
@@ -57,28 +57,22 @@ export class InitialSchema1234567890123 implements MigrationInterface {
             isNullable: false,
           },
         ],
+        foreignKeys: [
+          {
+            columnNames: ['bookId'],
+            referencedTableName: 'books',
+            referencedColumnNames: ['id'],
+            onDelete: 'CASCADE',
+          },
+        ],
+        indices: [
+          {
+            name: 'IDX_REVIEWS_BOOK_ID',
+            columnNames: ['bookId'],
+          },
+        ],
       }),
       true
-    );
-
-    // Create foreign key constraint
-    await queryRunner.createForeignKey(
-      'reviews',
-      new ForeignKey({
-        columnNames: ['bookId'],
-        referencedTableName: 'books',
-        referencedColumnNames: ['id'],
-        onDelete: 'CASCADE',
-      })
-    );
-
-    // Create index for optimization as required by assessment
-    await queryRunner.createIndex(
-      'reviews',
-      new Index({
-        name: 'IDX_REVIEWS_BOOK_ID',
-        columnNames: ['bookId'],
-      })
     );
   }
 

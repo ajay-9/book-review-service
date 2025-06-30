@@ -10,23 +10,19 @@ export class BookService {
     this.bookRepository = AppDataSource.getRepository(Book);
   }
 
-  async getAllBooks(limit: number = 10, offset: number = 0): Promise<Book[]> {
-    const cacheKey = `books:${limit}:${offset}`;
+  async getAllBooks(): Promise<Book[]> {
+    const cacheKey = 'books:all';
     
-    // Try cache first - cache-first strategy as required
+    // Try cache first 
     const cached = await CacheService.get<Book[]>(cacheKey);
     if (cached) {
-      console.log('Cache hit for books !!');
+      console.log('Cache hit for books');
       return cached;
     }
 
     // Cache miss - fetch from database
     console.log('Cache miss - fetching from database');
-    const books = await this.bookRepository.find({
-      take: limit,
-      skip: offset,
-      order: { title: 'ASC' } // Order by title
-    });
+     const books = await this.bookRepository.find();
 
     // Populate cache
     await CacheService.set(cacheKey, books);

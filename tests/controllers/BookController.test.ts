@@ -23,16 +23,20 @@ describe('BookController', () => {
 
       expect(response.body.success).toBe(true);
       expect(Array.isArray(response.body.data)).toBe(true);
-      expect(response.body.pagination).toBeDefined();
     });
 
-    it('should handle pagination parameters', async () => {
-      const response = await request(app)
-        .get('/books?limit=5&offset=0')
+    it('should return books from cache on second request', async () => {
+      // First request
+      const response1 = await request(app)
+        .get('/books')
         .expect(200);
 
-      expect(response.body.pagination.limit).toBe(5);
-      expect(response.body.pagination.offset).toBe(0);
+      // Second request should hit cache
+      const response2 = await request(app)
+        .get('/books')
+        .expect(200);
+
+      expect(response1.body.data).toEqual(response2.body.data);
     });
   });
 
@@ -56,6 +60,16 @@ describe('BookController', () => {
       const response = await request(app)
         .post('/books')
         .send({}) // Missing title
+        .expect(400);
+
+      expect(response.body.success).toBe(false);
+      expect(response.body.error).toContain('required');
+    });
+
+    it('should return 400 for empty title', async () => {
+      const response = await request(app)
+        .post('/books')
+        .send({ title: '' })
         .expect(400);
 
       expect(response.body.success).toBe(false);

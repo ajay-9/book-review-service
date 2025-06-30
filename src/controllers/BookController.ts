@@ -13,17 +13,6 @@ export class BookController {
    * /books:
    *   get:
    *     summary: Get all books
-   *     parameters:
-   *       - in: query
-   *         name: limit
-   *         schema:
-   *           type: integer
-   *           default: 10
-   *       - in: query
-   *         name: offset
-   *         schema:
-   *           type: integer
-   *           default: 0
    *     responses:
    *       200:
    *         description: List of books
@@ -37,28 +26,15 @@ export class BookController {
    *                 data:
    *                   type: array
    *                   items:
-   *                     type: object
-   *                     properties:
-   *                       id:
-   *                         type: string
-   *                       title:
-   *                         type: string
+   *                     $ref: '#/components/schemas/Book'
    */
   getAllBooks = async (req: Request, res: Response): Promise<void> => {
     try {
-      const limit = parseInt(req.query.limit as string) || 10;
-      const offset = parseInt(req.query.offset as string) || 0;
-
-      const books = await this.bookService.getAllBooks(limit, offset);
+      const books = await this.bookService.getAllBooks();
       
       res.status(200).json({
         success: true,
-        data: books,
-        pagination: {
-          limit,
-          offset,
-          count: books.length
-        }
+        data: books
       });
     } catch (error) {
       res.status(500).json({
@@ -72,7 +48,7 @@ export class BookController {
    * @swagger
    * /books:
    *   post:
-   *     summary: Create a new book
+   *     summary: Add a new book
    *     requestBody:
    *       required: true
    *       content:
@@ -87,6 +63,15 @@ export class BookController {
    *     responses:
    *       201:
    *         description: Book created successfully
+   *         content:
+   *           application/json:
+   *             schema:
+   *               type: object
+   *               properties:
+   *                 success:
+   *                   type: boolean
+   *                 data:
+   *                   $ref: '#/components/schemas/Book'
    *       400:
    *         description: Validation error
    */
@@ -94,7 +79,6 @@ export class BookController {
     try {
       const { title } = req.body;
 
-      // Validation
       if (!title) {
         res.status(400).json({
           success: false,

@@ -20,8 +20,7 @@ export class ReviewService {
     }
 
     return await this.reviewRepository.find({
-      where: { bookId },
-      order: { reviewerName: 'ASC' } // Order by reviewerName
+      where: { bookId }
     });
   }
 
