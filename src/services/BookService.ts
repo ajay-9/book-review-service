@@ -16,8 +16,7 @@ export class BookService {
     // Try cache first 
     const cached = await CacheService.get<Book[]>(cacheKey);
     if (cached) {
-      console.log('Cache hit for books');
-      return cached;
+      return cached; // Cache hit
     }
 
     // Cache miss - fetch from database
