@@ -78,8 +78,6 @@ export class ReviewController {
    *                 type: integer
    *                 minimum: 1
    *                 maximum: 5
-   *               comment:
-   *                 type: string
    *     responses:
    *       201:
    *         description: Review created successfully
@@ -91,7 +89,7 @@ export class ReviewController {
   createReview = async (req: Request, res: Response): Promise<void> => {
     try {
       const { id } = req.params;
-      const { reviewerName, rating, comment } = req.body;
+      const { reviewerName, rating } = req.body;
 
       // Validation
       if (!reviewerName || !rating) {
@@ -112,8 +110,7 @@ export class ReviewController {
 
       const review = await this.reviewService.createReview(id, {
         reviewerName,
-        rating,
-        comment
+        rating
       });
 
       res.status(201).json({

@@ -38,6 +38,11 @@ export class BookController {
    *                   type: array
    *                   items:
    *                     type: object
+   *                     properties:
+   *                       id:
+   *                         type: string
+   *                       title:
+   *                         type: string
    */
   getAllBooks = async (req: Request, res: Response): Promise<void> => {
     try {
@@ -76,13 +81,8 @@ export class BookController {
    *             type: object
    *             required:
    *               - title
-   *               - author
    *             properties:
    *               title:
-   *                 type: string
-   *               author:
-   *                 type: string
-   *               description:
    *                 type: string
    *     responses:
    *       201:
@@ -92,22 +92,18 @@ export class BookController {
    */
   createBook = async (req: Request, res: Response): Promise<void> => {
     try {
-      const { title, author, description } = req.body;
+      const { title } = req.body;
 
       // Validation
-      if (!title || !author) {
+      if (!title) {
         res.status(400).json({
           success: false,
-          error: 'Title and author are required'
+          error: 'Title is required'
         });
         return;
       }
 
-      const book = await this.bookService.createBook({
-        title,
-        author,
-        description
-      });
+      const book = await this.bookService.createBook({ title });
 
       res.status(201).json({
         success: true,

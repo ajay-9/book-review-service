@@ -22,22 +22,16 @@ const options = {
           type: 'object',
           properties: {
             id: { type: 'string', format: 'uuid' },
-            title: { type: 'string' },
-            author: { type: 'string' },
-            description: { type: 'string' },
-            createdAt: { type: 'string', format: 'date-time' },
-            updatedAt: { type: 'string', format: 'date-time' }
+            title: { type: 'string' }
           }
         },
         Review: {
           type: 'object',
           properties: {
             id: { type: 'string', format: 'uuid' },
-            bookId: { type: 'string', format: 'uuid' },
             reviewerName: { type: 'string' },
             rating: { type: 'integer', minimum: 1, maximum: 5 },
-            comment: { type: 'string' },
-            createdAt: { type: 'string', format: 'date-time' }
+            bookId: { type: 'string', format: 'uuid' }
           }
         }
       }
@@ -50,5 +44,5 @@ const specs = swaggerJsdoc(options);
 
 export const setupSwagger = (app: Express): void => {
   app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
-  console.log('📚 Swagger documentation available at /api-docs');
+  console.log('Swagger documentation available at /api-docs');
 };

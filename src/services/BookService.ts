@@ -16,7 +16,7 @@ export class BookService {
     // Try cache first - cache-first strategy as required
     const cached = await CacheService.get<Book[]>(cacheKey);
     if (cached) {
-      console.log('Cache hit for books');
+      console.log('Cache hit for books !!');
       return cached;
     }
 
@@ -25,7 +25,7 @@ export class BookService {
     const books = await this.bookRepository.find({
       take: limit,
       skip: offset,
-      order: { createdAt: 'DESC' }
+      order: { title: 'ASC' } // Order by title
     });
 
     // Populate cache

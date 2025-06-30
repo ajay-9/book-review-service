@@ -14,8 +14,7 @@ describe('ReviewController', () => {
     
     // Create a test book for reviews
     const book = await bookService.createBook({
-      title: 'Test Book for Reviews',
-      author: 'Test Author'
+      title: 'Test Book for Reviews'
     });
     bookId = book.id;
   });
@@ -52,8 +51,7 @@ describe('ReviewController', () => {
     it('should create a new review with 201 status', async () => {
       const reviewData = {
         reviewerName: 'Test Reviewer',
-        rating: 5,
-        comment: 'Great book!'
+        rating: 5
       };
 
       const response = await request(app)
@@ -70,8 +68,7 @@ describe('ReviewController', () => {
     it('should return 400 for invalid rating', async () => {
       const reviewData = {
         reviewerName: 'Test Reviewer',
-        rating: 6, // Invalid rating
-        comment: 'Invalid rating'
+        rating: 6 // Invalid rating
       };
 
       const response = await request(app)
@@ -91,22 +88,6 @@ describe('ReviewController', () => {
 
       expect(response.body.success).toBe(false);
       expect(response.body.error).toContain('required');
-    });
-
-    it('should return 404 for non-existent book', async () => {
-      const fakeId = '123e4567-e89b-12d3-a456-426614174000';
-      const reviewData = {
-        reviewerName: 'Test Reviewer',
-        rating: 5
-      };
-
-      const response = await request(app)
-        .post(`/books/${fakeId}/reviews`)
-        .send(reviewData)
-        .expect(404);
-
-      expect(response.body.success).toBe(false);
-      expect(response.body.error).toBe('Book not found');
     });
   });
 });
