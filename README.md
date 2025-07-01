@@ -186,7 +186,7 @@ curl http://localhost:3000/books/{book-id}/reviews
 {
   "success": false,
   "message": "Error description",
-  "error": "Detailed error (development only)"
+  "error": "Detailed error"
 }
 ```
 
@@ -213,7 +213,7 @@ curl http://localhost:3000/books/{book-id}/reviews
 - **Migration-based schema**: Version-controlled database changes for consistency
 
 
-## 🚀 Deployment Considerations
+## Deployment Considerations
 
 
 ### Environment Variables
