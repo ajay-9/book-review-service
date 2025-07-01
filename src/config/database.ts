@@ -1,6 +1,18 @@
 import { DataSource } from 'typeorm';
-import { Book } from '../entities/Books';
-import { Review } from '../entities/Review';;
+import { config } from 'dotenv';
+
+// Load environment variables FIRST
+config();
+
+import { Book } from '../entities/Books'; 
+import { Review } from '../entities/Review';
+
+console.log('Database Config:', {
+  host: process.env.DB_HOST,
+  username: process.env.DB_USERNAME,
+  database: process.env.DB_DATABASE,
+  password: process.env.DB_PASSWORD ? '***' : 'NOT SET'
+});
 
 export const AppDataSource = new DataSource({
   type: 'postgres',
