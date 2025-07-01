@@ -4,12 +4,14 @@ import { AppDataSource } from '../../src/config/database';
 
 describe('BookController', () => {
   beforeAll(async () => {
+    // Initialize database for tests
     if (!AppDataSource.isInitialized) {
       await AppDataSource.initialize();
     }
   });
 
   afterAll(async () => {
+    // Clean up database connection
     if (AppDataSource.isInitialized) {
       await AppDataSource.destroy();
     }
@@ -59,7 +61,7 @@ describe('BookController', () => {
     it('should return 400 for missing title', async () => {
       const response = await request(app)
         .post('/books')
-        .send({}) // Missing title
+        .send({})
         .expect(400);
 
       expect(response.body.success).toBe(false);

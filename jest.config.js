@@ -11,5 +11,8 @@ module.exports = {
     '!src/**/*.d.ts',
     '!src/migrations/*.ts'
   ],
-  testTimeout: 10000
+  testTimeout: 10000,
+  setupFilesAfterEnv: ['<rootDir>/tests/setup.ts'], 
+  forceExit: true,
+  detectOpenHandles: true 
 };

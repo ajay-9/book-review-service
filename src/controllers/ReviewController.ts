@@ -1,11 +1,18 @@
-import { Request, Response } from 'express';
-import { ReviewService } from '../services/ReviewService';
+import { Request, Response } from "express";
+import { ReviewService } from "../services/ReviewService";
 
 export class ReviewController {
   private reviewService: ReviewService;
 
   constructor() {
     this.reviewService = new ReviewService();
+  }
+
+  // Helper function to validate UUID format
+  private isValidUUID(uuid: string): boolean {
+    const uuidRegex =
+      /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+    return uuidRegex.test(uuid);
   }
 
   /**
@@ -39,25 +46,34 @@ export class ReviewController {
   getReviewsByBookId = async (req: Request, res: Response): Promise<void> => {
     try {
       const { id } = req.params;
-      
-      const reviews = await this.reviewService.getReviewsByBookId(id);
-      
-      res.status(200).json({
-        success: true,
-        data: reviews
-      });
-    } catch (error) {
-      if (error instanceof Error && error.message === 'Book not found') {
-        res.status(404).json({
+
+      // Validate UUID format first
+      if (!this.isValidUUID(id)) {
+        res.status(400).json({
           success: false,
-          error: 'Book not found'
+          error: "Invalid book ID format",
         });
         return;
       }
-      
+
+      const reviews = await this.reviewService.getReviewsByBookId(id);
+
+      res.status(200).json({
+        success: true,
+        data: reviews,
+      });
+    } catch (error) {
+      if (error instanceof Error && error.message === "Book not found") {
+        res.status(404).json({
+          success: false,
+          error: "Book not found",
+        });
+        return;
+      }
+
       res.status(500).json({
         success: false,
-        error: 'Failed to fetch reviews'
+        error: "Failed to fetch reviews",
       });
     }
   };
@@ -111,10 +127,20 @@ export class ReviewController {
       const { id } = req.params;
       const { reviewerName, rating } = req.body;
 
+      // Validate UUID format first
+      if (!this.isValidUUID(id)) {
+        res.status(400).json({
+          success: false,
+          error: "Invalid book ID format",
+        });
+        return;
+      }
+
+      // Validation
       if (!reviewerName || !rating) {
         res.status(400).json({
           success: false,
-          error: 'Reviewer name and rating are required'
+          error: "Reviewer name and rating are required",
         });
         return;
       }
@@ -122,32 +148,32 @@ export class ReviewController {
       if (rating < 1 || rating > 5) {
         res.status(400).json({
           success: false,
-          error: 'Rating must be between 1 and 5'
+          error: "Rating must be between 1 and 5",
         });
         return;
       }
 
       const review = await this.reviewService.createReview(id, {
         reviewerName,
-        rating
+        rating,
       });
 
       res.status(201).json({
         success: true,
-        data: review
+        data: review,
       });
     } catch (error) {
-      if (error instanceof Error && error.message === 'Book not found') {
+      if (error instanceof Error && error.message === "Book not found") {
         res.status(404).json({
           success: false,
-          error: 'Book not found'
+          error: "Book not found",
         });
         return;
       }
-      
+
       res.status(500).json({
         success: false,
-        error: 'Failed to create review'
+        error: "Failed to create review",
       });
     }
   };

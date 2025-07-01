@@ -89,5 +89,21 @@ describe('ReviewController', () => {
       expect(response.body.success).toBe(false);
       expect(response.body.error).toContain('required');
     });
+
+    it('should return 404 for non-existent book', async () => {
+      const fakeId = '123e4567-e89b-12d3-a456-426614174000';
+      const reviewData = {
+        reviewerName: 'Test Reviewer',
+        rating: 5
+      };
+
+      const response = await request(app)
+        .post(`/books/${fakeId}/reviews`)
+        .send(reviewData)
+        .expect(404);
+
+      expect(response.body.success).toBe(false);
+      expect(response.body.error).toBe('Book not found');
+    });
   });
 });
